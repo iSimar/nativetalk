@@ -1,0 +1,18 @@
+{
+  "name": "nativetalk",
+  "version": "1.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^5.5.2",
+    "prop-types": "^15.6.2",
+    "react-native-gifted-chat": "^0.4.3",
+    "react-native-iphone-x-helper": "^1.2.0",
+    "react-native-navbar": "^2.1.0"
+  }
+}
