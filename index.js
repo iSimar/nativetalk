@@ -27,7 +27,8 @@ export default class NativeTalk extends React.Component {
 			firstMessage: {
 				text: greeting,
 				name: 'Help Desk'
-			}
+			},
+			lastMessage: null
 		};
 	}
 	
@@ -102,16 +103,23 @@ export default class NativeTalk extends React.Component {
 			}
 			firebase.database().ref(`apps/${appId}/chatrooms/${chatRoomId}`).on('value', function (snapshot) {
 				const val = snapshot.val();
-				if (val && val.lastMessage && val.lastMessage.id && val.lastMessage.text &&
-						val.lastMessage.createdAt && val.lastMessage.fromServiceProvider && val.lastMessage.name){
-					this.onSend({
-						_id: val.lastMessage.id,
-						text: val.lastMessage.text,
-						createdAt: new Date(val.lastMessage.createdAt),
-						user: {
-							_id: 2,
-							name: val.lastMessage.name
-						}
+				const newLastMessage = val.lastMessage;
+				const lastMessage = this.state.lastMessage;
+				if (newLastMessage && newLastMessage.id && newLastMessage.text &&
+					newLastMessage.createdAt && newLastMessage.fromServiceProvider &&
+						(!lastMessage || (lastMessage.id && lastMessage.id !== newLastMessage.id))){
+					this.setState({
+						lastMessage: newLastMessage
+					}, () => {
+						this.onSend({
+							_id: newLastMessage.id,
+							text: newLastMessage.text,
+							createdAt: new Date(newLastMessage.createdAt),
+							user: {
+								_id: 2,
+								name: "Help Desk"
+							}
+						});
 					});
 				}
 			}.bind(this));
